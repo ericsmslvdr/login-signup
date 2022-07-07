@@ -13,17 +13,20 @@
     <div class="container">
         <div class="section">
             <div class="formCard">
-                <h1>Login</h1>
+                <div class="card-title">
+                    <h1>Login</h1>
+                    <hr>
+                </div>
                 <form action="" method="POST">
-                    <label class="">Username:</label>
+                    <label class="text-form">Username:</label>
                     <br>
-                    <input type="text" name="username" id="username">
+                    <input type="text" name="username" id="username" class="text-field">
                     <br>
-                    <label class="">Password:</label>
+                    <label class="text-form">Password:</label>
                     <br>
-                    <input type="text" name="password" id="password">
+                    <input type="text" name="password" id="password" class="text-field">
                     <br>
-                    <input type="submit" value="Login">
+                    <input type="submit" value="Login" class="login-btn">
                 </form>
             </div>
         </div>
