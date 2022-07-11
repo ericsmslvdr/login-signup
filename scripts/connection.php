@@ -1,12 +1,13 @@
 <?php
-class Connection {
-    private $dbHost = 'localhost';
-    private $dbUser = 'root';
-    private $dbPass = '';
-    private $dbName = 'loginsignupdb';
+class DatabaseConn {
 
-    public function __construct() {
-        $conn = new mysqli($this->dbHost, $this->dbUser, $this->dbPass, $this->dbName);
+    public function connect() {
+        $dbHost = 'localhost';
+        $dbUser = 'root';
+        $dbPass = '';
+        $dbName = 'loginsignupdb';
+
+        $conn = new mysqli($dbHost, $dbUser, $dbPass, $dbName);
 
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
@@ -15,7 +16,7 @@ class Connection {
     }
 }
 
-class SignUp {
+class SignUp extends DatabaseConn {
     private $username;
     private $password;
     private $email;
