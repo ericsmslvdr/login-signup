@@ -1,2 +1,2 @@
 # LoginSignupOOP
-wala pang ganap
+ala pa
