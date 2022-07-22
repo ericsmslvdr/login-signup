@@ -1,7 +1,7 @@
 <div class="container d-flex">
     <div class="card m-auto" style="width: 30em;">
         <div class="card-header">
-            <h2 class="card-title" style="margin: 0;">Sign Up</h2>
+            <h2 class="card-title m-0">Sign Up</h2>
         </div>
         <div class="card-body p-2">
             <form action="" method="POST">
@@ -20,7 +20,7 @@
             </form>
         </div>
         <div class="card-footer d-flex justify-content-end align-items-center">
-            <p class="text-muted" style="margin: 0 1em;"><small>Already Have an Account?</small></p>
+            <p class="text-muted m-0 mx-3"><small>Already Have an Account?</small></p>
             <a href="./index.php"><button type="button" class="btn btn-outline-primary btn-sm">Login</button></a>
         </div>
     </div>
