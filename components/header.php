@@ -14,6 +14,11 @@
         echo $title = isset($_GET['isSignup']) ? 'SignUp' : 'Login';
         ?>
     </title>
+    <style>
+        body {
+            background-color: #f1f2f4;
+        }
+    </style>
 </head>
 
 <body>
