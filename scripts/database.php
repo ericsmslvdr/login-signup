@@ -58,6 +58,30 @@ class Login extends DatabaseConn {
     public function __construct($user, $pass) {
         $this->user = $user;
         $this->pass = $pass;
-        
+
+        $checkUser = "SELECT username
+                        FROM userTbl
+                        WHERE username = '$this->user';";
+        $result = $this->connect()->query($checkUser);
+        $row = mysqli_num_rows($result);
+        $data = mysqli_fetch_assoc($result);
+        if ($row == 1) {
+            $_SESSION['username'] = $data['username'];
+            header('location: ./welcome.php?isLoggedIn=true');
+        }
     }
+}
+
+if (isset($_POST['login'])) {
+    $user = $_POST['username'];
+    $pass = $_POST['password'];
+
+    $select = new Login($user, $pass);
+}
+
+// Logout user
+if (isset($_POST['logout'])) {
+    unset($_SESSION['username']);
+    header('location: ./index.php');
+    exit();
 }
