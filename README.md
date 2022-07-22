@@ -1,4 +1,4 @@
-# LoginSignupOOP
+# Login Signup PHP
 
 <img src="./img/signup.png">
 <br>
