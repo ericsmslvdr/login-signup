@@ -52,6 +52,11 @@ if (isset($_POST['signup'])) {
 
 // Login User
 class Login extends DatabaseConn {
-    public function __construct() {
+    private $user;
+    private $pass;
+
+    public function __construct($user, $pass) {
+        $this->user = $user;
+        $this->pass = $pass;
     }
 }
