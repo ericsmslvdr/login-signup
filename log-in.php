@@ -6,9 +6,9 @@
         <div class="card-body p-2">
             <form action="" method="POST">
                 <label class="form-label mt-2">Username:</label>
-                <input type="text" name="username" id="username" class="form-control" placeholder="Enter Username Here" required>
+                <input type="text" name="username" class="form-control" placeholder="Enter Username Here" required>
                 <label class="form-label mt-2">Password:</label>
-                <input type="text" name="password" id="password" class="form-control" placeholder="Enter Password Here" required>
+                <input type="password" name="password" class="form-control" placeholder="Enter Password Here" required>
                 <br>
                 <input type="submit" name="login" value="Login" class="btn btn-primary">
             </form>
