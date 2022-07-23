@@ -15,11 +15,11 @@ include('./scripts/database.php');
     <title>
         <?php
         // dynamic web title
-        echo $title = (isset($_GET['isSignup'])
+        echo $title = isset($_GET['isSignup'])
             ? 'SignUp'
-            : isset($_GET['isLoggedIn']))
-            ? 'Welcome'
-            : 'Login';
+            : (isset($_SESSION['username'])
+                ? 'Welcome ' . $_SESSION['username']
+                : 'Login');
         ?>
     </title>
     <style>
