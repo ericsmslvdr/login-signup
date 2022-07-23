@@ -59,17 +59,35 @@ class Login extends DatabaseConn {
         $this->user = $user;
         $this->pass = $pass;
 
-        $checkUser = "SELECT username
+        $sql = "SELECT username, password
                         FROM userTbl
                         WHERE username = '$this->user';";
-        $result = $this->connect()->query($checkUser);
-        $row = mysqli_num_rows($result);
-        $data = mysqli_fetch_assoc($result);
-        if ($row == 1) {
-            $_SESSION['username'] = $data['username'];
-            header('location: ./welcome.php?isLoggedIn=true');
+        $result = $this->connect()->query($sql);
+        print_r($user = $this->checkUserAcc($result));
+
+        // $this->performLogin($user);
+    }
+
+    public function checkUserAcc($result) {
+        $data = $result->fetch_all(MYSQLI_ASSOC);
+        if (!empty($data)) {
+            return $data;
+        } else {
+            echo '
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <strong>Luh!</strong> You should check in on some of those fields below.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            ';
         }
     }
+
+    // public function performLogin($checkUserAcc, $data) {
+    //     if ($checkUserAcc) {
+    //         $_SESSION['username'] = $data[0]['username'];
+    //         header('location: ./welcome.php?isLoggedIn=true');
+    //     }
+    // }
 }
 
 if (isset($_POST['login'])) {
