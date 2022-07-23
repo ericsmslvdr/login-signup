@@ -53,12 +53,11 @@ class SignUp extends DatabaseConn {
     }
 
     public function signupAcc($isAccTaken) {
-        $result = false;
         if (!$isAccTaken) {
             $sql = "INSERT INTO userTbl (username, password, email, address)
-            VALUES ('$this->username','$this->password', '$this->email', '$this->address');";
+                    VALUES ('$this->username','$this->password', '$this->email', '$this->address');";
 
-            $result = $this->connect()->query($sql);
+            $this->connect()->query($sql);
 
             echo '
                 <div class="alert alert-success alert-dismissible fade show m-0" role="alert">
@@ -66,9 +65,7 @@ class SignUp extends DatabaseConn {
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
             ';
-        }
-
-        if (!$result) {
+        } else {
             echo '
                 <div class="alert alert-danger alert-dismissible fade show m-0" role="alert">
                     <strong>Sorry😕</strong> Username or Email Already Taken! Try another one😅
@@ -98,8 +95,8 @@ class Login extends DatabaseConn {
         $this->password = $pass;
 
         $sql = "SELECT username, password
-                        FROM userTbl
-                        WHERE username = '$this->username';";
+                FROM userTbl
+                WHERE username = '$this->username';";
 
         $result = $this->connect()->query($sql);
         $data = $result->fetch_assoc();
@@ -109,13 +106,25 @@ class Login extends DatabaseConn {
     }
 
     public function checkUserAcc($data) {
-        if (
-            !empty($data)
-            && $this->username == $data['username']
-            && $this->password == $data['password']
-        ) {
-            return true;
+        if (!empty($data)) {
+            if ($this->username != $data['username'] || $this->password != $data['password']) {
+                echo '
+                    <div class="alert alert-danger alert-dismissible fade show m-0" role="alert">
+                        <strong>Luh🤔? nigagawamu!</strong> Invalid username or password. Try again🙈.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                ';
+                return false;
+            } else {
+                return true;
+            }
         }
+        echo '
+            <div class="alert alert-danger alert-dismissible fade show m-0" role="alert">
+                <strong>Luh🤔? nigagawamu!</strong> Account Does not exist!. Sign up first🙈.
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        ';
     }
 
     public function performLogin($ableToLogin, $data) {
@@ -123,12 +132,6 @@ class Login extends DatabaseConn {
             $_SESSION['username'] = $data['username'];
             header('location: ./welcome.php?isLoggedIn=true');
         }
-        echo '
-            <div class="alert alert-danger alert-dismissible fade show m-0" role="alert">
-                <strong>Luh🤔? nigagawamu!</strong> Invalid username or password. Try again🙈.
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        ';
     }
 }
 
