@@ -45,7 +45,7 @@ include('./scripts/database.php');
                     <?php
                     if (isset($_SESSION['username'])) {
                         echo '
-                            <span class="text-light mx-3">Hi there! ' . $_SESSION['username'] . '</span>
+                            <span class="text-light mx-3">Hi there👋! ' . $_SESSION['username'] . '</span>
                             <button type="submit" name="logout" class="btn btn-danger btn-sm">Logout</button>
                         ';
                     } else {
