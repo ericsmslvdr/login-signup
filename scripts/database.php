@@ -63,15 +63,26 @@ class Login extends DatabaseConn {
                         FROM userTbl
                         WHERE username = '$this->user';";
         $result = $this->connect()->query($sql);
-        $user = $this->checkUserAcc($result);
+        $data = $result->fetch_assoc();
+        $ableToLogin = $this->checkUserAcc($data);
 
-        $this->performLogin($user);
+        $this->performLogin($ableToLogin, $data);
     }
 
-    public function checkUserAcc($result) {
-        $data = $result->fetch_all(MYSQLI_ASSOC);
-        if (!empty($data)) {
-            return $data;
+    public function checkUserAcc($data) {
+        if (
+            !empty($data)
+            && $this->user == $data['username']
+            && $this->pass == $data['password']
+        ) {
+            return true;
+        }
+    }
+
+    public function performLogin($ableToLogin, $data) {
+        if ($ableToLogin) {
+            $_SESSION['username'] = $data['username'];
+            header('location: ./welcome.php?isLoggedIn=true');
         } else {
             echo '
                 <div class="alert alert-danger alert-dismissible fade show m-0" role="alert">
@@ -80,11 +91,6 @@ class Login extends DatabaseConn {
                 </div>
             ';
         }
-    }
-
-    public function performLogin($user) {
-        $_SESSION['username'] = $user[0]['username'];
-        header('location: ./welcome.php?isLoggedIn=true');
     }
 }
 
