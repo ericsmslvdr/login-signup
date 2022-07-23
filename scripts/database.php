@@ -131,6 +131,7 @@ class Login extends DatabaseConn {
         if ($ableToLogin) {
             $_SESSION['username'] = $data['username'];
             header('location: ./welcome.php?isLoggedIn=true');
+            exit();
         }
     }
 }
