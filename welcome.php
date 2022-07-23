@@ -1,6 +1,11 @@
 <?php
 include('./components/header.php');
 
+// prevent user from going to this page without even loggin in
+if (!isset($_SESSION['username'])) {
+    header('location: ./index.php');
+}
+
 ?>
 
 <!DOCTYPE html>
