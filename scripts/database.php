@@ -32,7 +32,6 @@ class SignUp extends DatabaseConn {
         $this->address = $addr;
 
         $isAccTaken = $this->isAccTaken();
-
         $this->signupAcc($isAccTaken);
     }
 
@@ -44,6 +43,7 @@ class SignUp extends DatabaseConn {
 
         $result = $this->connect()->query($sql);
         $data = $result->fetch_assoc();
+        $this->connect()->close();
 
         if (!empty($data)) {
             if ($this->username == $data['username'] || $this->email == $data['email']) {
@@ -58,6 +58,7 @@ class SignUp extends DatabaseConn {
                     VALUES ('$this->username','$this->password', '$this->email', '$this->address');";
 
             $this->connect()->query($sql);
+            $this->connect()->close();
 
             echo '
                 <div class="alert alert-success alert-dismissible fade show m-0" role="alert">
@@ -76,14 +77,7 @@ class SignUp extends DatabaseConn {
     }
 }
 
-if (isset($_POST['signup'])) {
-    $user = $_POST['username'];
-    $pass = $_POST['password'];
-    $email = $_POST['email'];
-    $addr = $_POST['address'];
 
-    new SignUp($user, $pass, $email, $addr);
-}
 
 // Login User
 class Login extends DatabaseConn {
@@ -100,8 +94,9 @@ class Login extends DatabaseConn {
 
         $result = $this->connect()->query($sql);
         $data = $result->fetch_assoc();
-        $ableToLogin = $this->checkUserAcc($data);
+        $this->connect()->close();
 
+        $ableToLogin = $this->checkUserAcc($data);
         $this->performLogin($ableToLogin, $data);
     }
 
@@ -121,7 +116,7 @@ class Login extends DatabaseConn {
         }
         echo '
             <div class="alert alert-danger alert-dismissible fade show m-0" role="alert">
-                <strong>Luh🤔? nigagawamu!</strong> Account Does not exist!. Sign up first🙈.
+                <strong>Luh🤔? nigagawamu!</strong> Account Does not exist! Sign up first🙈.
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         ';
@@ -134,6 +129,15 @@ class Login extends DatabaseConn {
             exit();
         }
     }
+}
+
+if (isset($_POST['signup'])) {
+    $user = $_POST['username'];
+    $pass = $_POST['password'];
+    $email = $_POST['email'];
+    $addr = $_POST['address'];
+
+    new SignUp($user, $pass, $email, $addr);
 }
 
 if (isset($_POST['login'])) {
