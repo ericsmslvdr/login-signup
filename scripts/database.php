@@ -63,9 +63,9 @@ class Login extends DatabaseConn {
                         FROM userTbl
                         WHERE username = '$this->user';";
         $result = $this->connect()->query($sql);
-        print_r($user = $this->checkUserAcc($result));
+        $user = $this->checkUserAcc($result);
 
-        // $this->performLogin($user);
+        $this->performLogin($user);
     }
 
     public function checkUserAcc($result) {
@@ -74,20 +74,18 @@ class Login extends DatabaseConn {
             return $data;
         } else {
             echo '
-                <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                    <strong>Luh!</strong> You should check in on some of those fields below.
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <div class="alert alert-danger alert-dismissible fade show m-0" role="alert">
+                    <strong>Luh? nigagawamu!</strong> Invalid username or password.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
             ';
         }
     }
 
-    // public function performLogin($checkUserAcc, $data) {
-    //     if ($checkUserAcc) {
-    //         $_SESSION['username'] = $data[0]['username'];
-    //         header('location: ./welcome.php?isLoggedIn=true');
-    //     }
-    // }
+    public function performLogin($user) {
+        $_SESSION['username'] = $user[0]['username'];
+        header('location: ./welcome.php?isLoggedIn=true');
+    }
 }
 
 if (isset($_POST['login'])) {
