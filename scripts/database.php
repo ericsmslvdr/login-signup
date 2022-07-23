@@ -116,7 +116,7 @@ class Login extends DatabaseConn {
         }
         echo '
             <div class="alert alert-danger alert-dismissible fade show m-0" role="alert">
-                <strong>Luh🤔? nigagawamu!</strong> Account Does not exist! Sign up first🙈.
+                <strong>Luh🤔? nigagawamu!</strong> Account Does not exist! Sign up first🥺.
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         ';
@@ -125,7 +125,7 @@ class Login extends DatabaseConn {
     public function performLogin($ableToLogin, $data) {
         if ($ableToLogin) {
             $_SESSION['username'] = $data['username'];
-            header('location: ./welcome.php?isLoggedIn=true');
+            header('location: ./welcome.php');
             exit();
         }
     }
