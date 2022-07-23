@@ -31,12 +31,50 @@ class SignUp extends DatabaseConn {
         $this->email = $email;
         $this->address = $addr;
 
-        $sql = "INSERT INTO userTbl (username, password, email, address)
-                VALUES ('$this->username','$this->password', '$this->email', '$this->address');";
+        $isAccTaken = $this->isAccTaken();
 
-        $stmt = $this->connect()->query($sql);
-        if ($stmt == true) {
-            $this->connect()->close();
+        $this->signupAcc($isAccTaken);
+    }
+
+    public function isAccTaken() {
+        $sql = "SELECT username, email
+                FROM userTbl
+                WHERE username = '$this->username'
+                OR email = '$this->email';";
+
+        $result = $this->connect()->query($sql);
+        $data = $result->fetch_assoc();
+
+        if (!empty($data)) {
+            if ($this->username == $data['username'] || $this->email == $data['email']) {
+                return true;
+            }
+        }
+    }
+
+    public function signupAcc($isAccTaken) {
+        $result = false;
+        if (!$isAccTaken) {
+            $sql = "INSERT INTO userTbl (username, password, email, address)
+            VALUES ('$this->username','$this->password', '$this->email', '$this->address');";
+
+            $result = $this->connect()->query($sql);
+
+            echo '
+                <div class="alert alert-success alert-dismissible fade show m-0" role="alert">
+                    <strong>Congrats🥳!</strong> Account Successfully Registered...
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            ';
+        }
+
+        if (!$result) {
+            echo '
+                <div class="alert alert-danger alert-dismissible fade show m-0" role="alert">
+                    <strong>Sorry😕</strong> Username or Email Already Taken! Try another one😅
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            ';
         }
     }
 }
@@ -47,21 +85,22 @@ if (isset($_POST['signup'])) {
     $email = $_POST['email'];
     $addr = $_POST['address'];
 
-    $insert = new SignUp($user, $pass, $email, $addr);
+    new SignUp($user, $pass, $email, $addr);
 }
 
 // Login User
 class Login extends DatabaseConn {
-    private $user;
-    private $pass;
+    private $username;
+    private $password;
 
     public function __construct($user, $pass) {
-        $this->user = $user;
-        $this->pass = $pass;
+        $this->username = $user;
+        $this->password = $pass;
 
         $sql = "SELECT username, password
                         FROM userTbl
-                        WHERE username = '$this->user';";
+                        WHERE username = '$this->username';";
+
         $result = $this->connect()->query($sql);
         $data = $result->fetch_assoc();
         $ableToLogin = $this->checkUserAcc($data);
@@ -72,8 +111,8 @@ class Login extends DatabaseConn {
     public function checkUserAcc($data) {
         if (
             !empty($data)
-            && $this->user == $data['username']
-            && $this->pass == $data['password']
+            && $this->username == $data['username']
+            && $this->password == $data['password']
         ) {
             return true;
         }
@@ -83,14 +122,13 @@ class Login extends DatabaseConn {
         if ($ableToLogin) {
             $_SESSION['username'] = $data['username'];
             header('location: ./welcome.php?isLoggedIn=true');
-        } else {
-            echo '
-                <div class="alert alert-danger alert-dismissible fade show m-0" role="alert">
-                    <strong>Luh? nigagawamu!</strong> Invalid username or password.
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
-            ';
         }
+        echo '
+            <div class="alert alert-danger alert-dismissible fade show m-0" role="alert">
+                <strong>Luh🤔? nigagawamu!</strong> Invalid username or password. Try again🙈.
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        ';
     }
 }
 
@@ -98,7 +136,7 @@ if (isset($_POST['login'])) {
     $user = $_POST['username'];
     $pass = $_POST['password'];
 
-    $select = new Login($user, $pass);
+    new Login($user, $pass);
 }
 
 // Logout user
